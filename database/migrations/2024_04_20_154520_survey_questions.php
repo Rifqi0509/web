@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('survey_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('baik');
-            $table->string('sangat_baik');
-            $table->string('buruk');
-            $table->string('sangat_buruk');
+            $table->string('questions');
+            $table->string('baik')->nullable();
+            $table->string('sangat_baik')->nullable();
+            $table->string('buruk')->nullable();
+            $table->string('sangat_buruk')->nullable();
             $table->timestamps();
         });
     }

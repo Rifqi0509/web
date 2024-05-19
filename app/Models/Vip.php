@@ -10,7 +10,6 @@ class Vip extends Model
     use HasFactory;
     protected $table = 'vip';
     protected $fillable = [
-        'kd_undangan',
         'nama',
         'alamat',
         'keperluan',

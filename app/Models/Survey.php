@@ -10,6 +10,7 @@ class Survey extends Model
     use HasFactory;
     protected $table = 'survey_questions';
     protected $fillable = [
+        'questions',
         'baik',
         'sangat_baik',
         'buruk',

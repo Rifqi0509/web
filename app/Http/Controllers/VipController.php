@@ -32,44 +32,49 @@ class VipController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            // Validasi data yang masuk
+            $validator = Validator::make($request->all(), [
+                'nama' => 'required|string|max:255',
+                'alamat' => 'required|string',
+                'keperluan' => 'required|string|max:255',
+                'asal_instansi' => 'required|string|max:255',
+                'no_hp' => 'required|string|regex:/^08[0-9]{10,}$/|max:255', // Dimulai dengan "08" dan minimal 12 karakter
+                'tanggal' => 'required|date',
+                'jam' => 'required|date_format:H:i', // Validasi jam
+                'departemen' => 'required|string',
+                'seksi' => 'required|string',
+                'ket' => 'required|string',
+            ]);
 
-        Log::info('Data yang diterima:', $request->all());
+            if ($validator->fails()) {
+                throw new ValidationException($validator);
+            }
 
-       // Validasi data yang masuk
-    $request->validate([
-        'kd_undangan' => 'required|string|max:255',
-        'nama' => 'required|string|max:255',
-        'alamat' => 'required|string',
-        'keperluan' => 'required|string|max:255',
-        'asal_instansi' => 'required|string|max:255',
-        'no_hp' => 'required|string|regex:/^08[0-9]{10,}$/|max:255', // Dimulai dengan "08" dan minimal 12 karakter
-        'tanggal' => 'required|date',
-        'jam' => 'required|date_format:H:i', // Validasi jam
-        'departemen' => 'required|string',
-        'seksi' => 'required|string',
-        'status' => 'required|string',
-        'ket' => 'required|string',
-    ]);
+            // Simpan data ke database dengan status default "pending"
+            $vip = Vip::create([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'keperluan' => $request->keperluan,
+                'asal_instansi' => $request->asal_instansi,
+                'no_hp' => $request->no_hp,
+                'tanggal' => $request->tanggal,
+                'jam' => $request->jam,
+                'departemen' => $request->departemen,
+                'seksi' => $request->seksi,
+                'status' => 'pending', // Atur status menjadi "pending"
+                'ket' => $request->ket,
+            ]);
 
-    // Simpan data ke database
-    Vip::create([
-        'kd_undangan' => $request->kd_undangan,
-        'nama' => $request->nama,
-        'alamat' => $request->alamat,
-        'keperluan' => $request->keperluan,
-        'asal_instansi' => $request->asal_instansi,
-        'no_hp' => $request->no_hp,
-        'tanggal' => $request->tanggal,
-        'jam' => $request->jam,
-        'departemen' => $request->departemen,
-        'seksi' => $request->seksi,
-        'status' => $request->status,
-        'ket' => $request->ket,
-        
-    ]);
-
-    // Redirect atau kembali ke halaman sebelumnya dengan notifikasi
-    return redirect()->route('vip.index')->with('success', 'Data berhasil disimpan!');
+            // Jika data berhasil disimpan, kirim respon JSON
+            return response()->json(['success' => true, 'message' => 'Data berhasil disimpan!', 'data' => $vip], 201);
+        } catch (ValidationException $e) {
+            // Jika terjadi kesalahan validasi, kirim respon JSON dengan pesan kesalahan
+            return response()->json(['success' => false, 'message' => 'Validasi gagal', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan lainnya, kirim respon JSON dengan pesan kesalahan server
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan server'], 500);
+        }
     }
 
     /**

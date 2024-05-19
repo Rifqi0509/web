@@ -22,24 +22,55 @@ class SurveyController extends Controller
 
     public function store(Request $request)
     {
-        Survey::create($request->all());
+        // Validasi data
+        $validatedData = $request->validate([
+            'questions' => 'required|string|max:255',
+            // tambahkan validasi untuk field lainnya sesuai kebutuhan
+        ]);
 
-        // Redirect atau kembali ke halaman sebelumnya dengan notifikasi
+        // Buat model instance dan isi dengan data yang divalidasi
+        $surveys = new Survey(); // Ganti dengan nama model yang sesuai
+        $surveys->questions= $validatedData['questions'];
+        $surveys->baik = $request->input('baik', null);
+        $surveys->sangat_baik = $request->input('sangat_baik', null);
+        $surveys->buruk = $request->input('buruk', null);
+        $surveys->sangat_buruk = $request->input('sangat_buruk', null);
+
+        // Simpan survey ke database
+        $surveys->save();
+
+        // Redirect ke halaman yang diinginkan dengan pesan sukses
         return redirect()->route('survey.index')->with('success', 'Data berhasil disimpan!');
     }
 
     public function edit(string $id)
     {
-        // 
+        $survey = Survey::findOrFail($id); 
+        return view('survey.edit', compact('survey'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {   
-        //
+        $validatedData = $request->validate([
+            'questions' => 'required|string|max:255',
+        ]);
+
+        $survey = Survey::findOrFail($id);
+
+        $survey->questions = $validatedData['questions'];
+    
+        $survey->save();
+
+        return redirect()->route('survey.index')->with('success', 'Data berhasil diperbarui!');
     }
+
+    public function destroy(string $id)
+    {
+        $survey = Survey::findOrFail($id);
+        $survey->delete();
+        return redirect()->route('survey.index')->with('success', 'Data berhasil dihapus!');
+    }
+
 
     public function cetak(){
         $surveys = Survey::all();
@@ -55,20 +86,4 @@ class SurveyController extends Controller
         $survey = Survey::all();
         return view ('auth.survey', compact('survey'));
     }
-
-    // public function cetakForm()
-    // {
-    //     return view('survey.cetak-survey-form');
-    // }
-
-    // public function cetakTanggal($tanggalAwal, $tanggalAkhir)
-    // {
-    //     $tanggalAwal = date('Y-m-d', strtotime($tanggalAwal));
-    //     $tanggalAkhir = date('Y-m-d', strtotime($tanggalAkhir));
-    //     $cetakPertanggal = Survey::whereDate('created_at', '>=', $tanggalAwal)
-    //                             ->whereDate('created_at', '<=', $tanggalAkhir)
-    //                             ->get();
-                                
-    //     return view('survey.cetak-survey-tanggal', compact('cetakPertanggal'));
-    // }
 }

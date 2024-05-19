@@ -29,10 +29,6 @@
                     <li><a class="dropdown-item" href="{{ route('excel-vip') }}" id="exportExcelButton"><i class="fas fa-file-excel"></i> Excel</a></li>
                 </ul>
             </div>
-            
-            <button class="btn btn-success" type="button" style="padding: 5px 10px; color: #fff; margin-right: 10px;" onclick="togglePopup()">
-                <i class="fas fa-plus"></i> &nbsp;Tambah Data
-            </button>
         </div>
         
         <div class="table-responsive">
@@ -121,92 +117,6 @@
         </nav>
         <!-- End Pagination -->
     
-
-
-<!-- POP UP TAMBAH DATA-->
-<div id="popup" style="display: none; position: fixed; top: 55%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 10px; border: 1px solid #ccc; /* abu-abu yang lebih muda */ box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); max-width: 400px; max-height: 80vh; overflow-y: auto; z-index: 9999;">
-    <h4 style="margin-top: 0; margin-bottom: 20px; text-align: center;">Tambah Data Tamu VIP</h4>
-    
-    <form action="{{ route('vip.store') }}" method="POST">
-        @csrf
-        <div class="form-group">
-            <label for="kd_undangan">Kode Undangan</label>
-            <input type="text" class="form-control" id="kd_undangan" name="kd_undangan" placeholder="Masukkan Undangan">
-        </div>
-        <div class="form-group">
-            <label for="nama">Nama</label>
-            <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama">
-        </div>
-        <div class="form-group">
-            <label for="alamat">Alamat</label>
-            <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Masukkan alamat">
-        </div>
-        <div class="form-group">
-            <label for="keperluan">Keperluan</label>
-            <input type="text" class="form-control" id="keperluan" name="keperluan" placeholder="Masukkan keperluan">
-        </div>
-        <div class="form-group">
-            <label for="asal_instansi">Asal Instansi</label>
-            <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi">
-        </div>
-        <div class="form-group">
-            <label for="no_hp">No HP</label>
-            <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan nomor HP">
-        </div>
-        <div class="form-group" id="departemen">
-            <label for="departemen">Departemen</label>
-            <select class="form-control" id="departemen" name="departemen">
-                <option><-- Pilih Departemen --></option>
-                <option value="keuangan">Keuangan</option>
-                <option value="ketenagakerjaan">Ketenagakerjaan</option>
-                <option value="paud/tk">Paud/Tk</option>
-                <option value="sd">SD</option>
-                <option value="smp">SMP</option>
-               ]
-                <!-- Tambahkan opsi lainnya sesuai dengan kebutuhan -->
-            </select>
-        </div>
-        <div class="form-group" id="seksi">
-            <label for="seksi">Seksi</label>
-            <select class="form-control" id="seksi" name="seksi">
-             
-                <option value="kurikulum/penilaian">Kurikulum dan Penilaian</option>
-                <option value="sarana/prasarana">Sarana dan Prasarana</option>
-                <option value="pendidik_sd">Pendidik dan Tenaga SD</option>
-                <option value="pendidik_smp">Pendidik dan Tenaga SMP</option>
-              
-                <!-- Editkan opsi lainnya sesuai dengan kebutuhan -->
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="status">Status</label>
-            <select class="form-control" id="status" name="status">
-                <option>Proses</option>
-                <option value="approved" >Approved</option>
-                <option value="rejected" >Rejected</option>
-                <option value="pending" >Pending</option>
-            </select>
-                <!-- Editkan opsi lainnya sesuai dengan kebutuhan -->
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="ket">Keterangan</label>
-            <input type="text" class="form-control" id="ket" name="ket" placeholder="Masukkan Keterangan">
-        </div>
-        <div class="form-group">
-            <label for="tanggal">Tanggal</label>
-            <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="Masukkan Tanggal">
-        </div>
-        <div class="form-group">
-            <label for="jam">Jam</label>
-            <input type="time" class="form-control" id="jam" name="jam" placeholder="Masukkan Jam">
-        </div>
-        <div style="text-align: center;">
-            <button type="submit" class="btn btn-primary" style="margin-right: 10px; color:#fff;">Submit</button>
-            <button type="button" class="btn btn-secondary" style="color:#fff;" onclick="togglePopup()">Close</button>
-        </div>
-    </form>
-</div>
 <!-- END POP UP TAMBAH DATA-->
 @foreach($vips as $vip)
 
